@@ -23,6 +23,11 @@ function launchSearch(input) {
   window.open(`http://${input}.myshopify.com/admin`);
 }
 
+// Build admin links
+function takeMeAway(input) {
+  window.open(`${input}`);
+}
+
 /* 
 - Create button objects + constructors  
   - type: enabled = button success style + working link + click listener
@@ -78,6 +83,15 @@ function findLabels() {
           new ShortcutButton(shopURL, inputField.parentElement, "success")
         );
       }
+    } else if(label.nextElementSibling && label.nextElementSibling.tagName == "INPUT"){
+      let inputField = label.nextElementSibling;
+      let theContents = label.nextElementSibling.value;
+      if (theContents.includes(".com") || theContents.includes(".ca")) {
+        let theURL = theContents;
+        buttonsArray.push(
+          new ShortcutButton(theURL, inputField.parentElement, "regURL")
+        );
+      }
     }
   }
 }
@@ -115,6 +129,19 @@ function buildButtons() {
           // 3. Add event handler
           partnerButton.addEventListener("click", function () {
             launchSearch(value);
+          });
+          break;
+        }
+        case "regURL": {
+          console.log("log reg url case");
+          // 1. Create the button
+          partnerButton.innerHTML = "&#128279;";
+          partnerButton.title = "Click to follow the link.";
+          // 2. Append to parent
+          parent.appendChild(partnerButton);
+          // 3. Add event handler
+          partnerButton.addEventListener("click", function () {
+            takeMeAway(value);
           });
           break;
         }
